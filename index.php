@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
   session_name("Rentree");
   @session_start();
@@ -49,3 +50,16 @@ $(document).ready(function(){
 <?php include_once("includes/footer.php"); ?>
 </body>
 </html>
+=======
+<?php
+require_once 'lib/limonade.php';
+ini_set('display-errors','on');
+error_reporting(E_ALL);
+dispatch('/', 'hello');
+  function hello()
+  {
+      return 'Hello world!';
+  }
+run();
+?>
+>>>>>>> 3f035e5fb023b77d3dc156b1dac89879f3c7d1b7
