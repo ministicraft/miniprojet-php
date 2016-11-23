@@ -1,2 +1,0 @@
-# miniprojet-php
-miniprojet-php
