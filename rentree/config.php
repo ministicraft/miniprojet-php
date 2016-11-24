@@ -11,8 +11,8 @@
   // informations concernant la base de données
   $DbHost = "127.0.0.1";
   $DbName = "doc_rentree";
-  $DbUser = "à vous de le définir ...";
-  $DbPassword = "à de le définir ..."; 
+  $DbUser = "rentree";
+  $DbPassword = "rentree";
   
   $libellePromo = array (
     "1&#x02B3;&#x1D49; année, Cycle Biologie Sciences et Technologies" => "CBIO_A1",    
