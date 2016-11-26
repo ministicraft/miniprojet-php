@@ -8,27 +8,33 @@
 
 namespace App\DAO;
 
-
+include_once __DIR__.'/../Model/Document.php';
 use App\Model\Document;
 
 class DocumentDAO
 {
     private $db;
 
-    private function __construct(\PDO $db){
+    public function __construct(\PDO $db){
         $this->setDb($db);
     }
 
-    private function getList(){
-        foreach ($this->getDb()->query('SELECT * FROM document') as $row){
-            $documents[] = $this->buildPromo($row);
+    public function getList(){
+        /*foreach ($this->getDb()->query('SELECT * FROM document') as $row){
+            $documents[] = $this->buildDocument($row);
             return $documents;
+        }*/
+        $dbh = $this->getDb();
+        foreach($dbh->query('SELECT * FROM document') as $row) {
+            $documents[] = $this->buildDocument($row);
         }
+        return $documents;
     }
 
-    private function get($id){
-        $row = $this->getDb()->query('SELECT * FROM document');
-        $document = $this->buildPromo($row);
+    public function get($id){
+        $dbh = new \PDO('mysql:host=localhost;dbname=doc_rentree', 'rentree', 'rentree');
+        $row = $dbh->query('SELECT * FROM document');
+        $document = $this->buildDocument($row);
         return $document;
     }
 
@@ -39,9 +45,9 @@ class DocumentDAO
     private function buildDocument(array $row){
         $document = new Document();
         $document->setId($row['id']);
-        $document->setLibelle($row['libelle']);
         $document->setPromo($row['promo']);
         $document->setRang($row['rang']);
+        $document->setLibelle($row['libelle']);
         $document->setFichier($row['fichier']);
         return $document;
     }

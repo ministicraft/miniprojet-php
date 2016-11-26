@@ -8,7 +8,7 @@
 
 namespace App\DAO;
 
-
+include_once __DIR__.'/../Model/Promo.php';
 use App\Model\Promo;
 
 class PromoDAO
@@ -21,10 +21,11 @@ class PromoDAO
     }
 
     public function getList(){
-        foreach ($this->getDb()->query('SELECT * FROM promo') as $row){
+        $dbh = $this->getDb();
+        foreach($dbh->query('SELECT * FROM promo') as $row) {
             $promos[] = $this->buildPromo($row);
-            return $promos;
         }
+        return $promos;
     }
 
     public function get(Promo $promo){
@@ -35,7 +36,7 @@ class PromoDAO
     private function buildPromo(array $row){
         $promo = new Promo();
         $promo->setType($row['type']);
-        $promo->setAnnee($row['anneee']);
+        $promo->setAnnee($row['annee']);
         $promo->setLocalisation($row['localisation']);
         return $promo;
     }
