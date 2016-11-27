@@ -15,9 +15,6 @@ include 'header.php';
                     <div class="input-field col s12">
                         <select id="select_cycle">
                             <option value="" disabled selected>Choisisser un Cycle</option>
-                            <option value="1">CIR</option>
-                            <option value="2">CSI</option>
-                            <option value="3">M</option>
                             <option id="other" value="other">Autre</option>
                         </select>
                         <label>Cycle</label>
@@ -70,9 +67,6 @@ include 'header.php';
                     <div class="input-field col s12">
                         <select id="select_cycle">
                             <option value="" disabled selected>Choisisser un Cycle</option>
-                            <option value="1">CIR</option>
-                            <option value="2">CSI</option>
-                            <option value="3">M</option>
                             <option id="other" value="other">Autre</option>
                         </select>
                         <label>Cycle</label>
@@ -82,18 +76,14 @@ include 'header.php';
                         <label for="cycle">Nouveau Cylce</label>
                     </div>
                     <div class="input-field col s12">
-                        <select id="year">
+                        <select id="select_annee">
                             <option value="" disabled selected>Choisisser une année</option>
-                            <option value="1">Option 1</option>
-                            <option value="2">Option 2</option>
                         </select>
                         <label>Année</label>
                     </div>
                     <div class="input-field col s12">
                         <select id="select_loc">
                             <option value="" disabled selected>Localisation</option>
-                            <option value="1">Brest</option>
-                            <option value="2">Renne</option>
                             <option id="other" value="other">Autre</option>
                         </select>
                         <label>Localisation</label>
@@ -127,6 +117,37 @@ include 'header.php';
                 else{
                     $("#other_loc").hide()
                 }
+            });
+
+            $.getJSON( "api/cycles", function( data ) {
+                var items = [];
+                $.each( data, function( key, val ) {
+                    $("#select_cycle").append("<option value="+val+">"+val+"</option>");
+                });
+                $(document).ready(function() {
+                    $('select').material_select();
+                });
+
+            });
+            $.getJSON( "api/locs", function( data ) {
+                var items = [];
+                $.each( data, function( key, val ) {
+                    $("#select_loc").append("<option value="+val+">"+val+"</option>");
+                });
+                $(document).ready(function() {
+                    $('select').material_select();
+                });
+
+            });
+            $.getJSON( "api/annees", function( data ) {
+                var items = [];
+                $.each( data, function( key, val ) {
+                    $("#select_annee").append("<option value="+val+">"+val+"</option>");
+                });
+                $(document).ready(function() {
+                    $('select').material_select();
+                });
+
             });
 
             //materialize

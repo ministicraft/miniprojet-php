@@ -59,3 +59,42 @@ function getPromos()
     }
     return json_encode($output);
 }
+dispatch('/api/promos/:id', 'getPromo');
+function getPromo()
+{
+    $id = params('id');
+    $dao = new PromoDAO($GLOBALS['db']);
+    $promo = $dao->get($id);
+
+    $output[] = array(
+        "id" => $promo->getId(),
+        "type" => $promo->getCycle(),
+        "annee" => $promo->getAnnee(),
+        "localisation" => $promo->getLocalisation(),
+    );
+    return json_encode($output);
+}
+dispatch('/api/locs', 'getLocs');
+function getLocs()
+{
+    $dao = new PromoDAO($GLOBALS['db']);
+    $locs = $dao->getListLoc();
+
+    return json_encode($locs);
+}
+dispatch('/api/annees', 'getAnnees');
+function getAnnees()
+{
+    $dao = new PromoDAO($GLOBALS['db']);
+    $annees = $dao->getListAnnee();
+
+    return json_encode($annees);
+}
+dispatch('/api/cycles', 'getCycles');
+function getCycles()
+{
+    $dao = new PromoDAO($GLOBALS['db']);
+    $cycles = $dao->getListCycle();
+
+    return json_encode($cycles);
+}

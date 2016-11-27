@@ -28,9 +28,15 @@ class PromoDAO
         return $promos;
     }
 
-    public function get(Promo $promo){
-        $tmp = $this->getList()[$promo];
-        return $tmp;
+    public function get($id){
+        $dbh = $this->getDb();
+        $stmt = $dbh->prepare("SELECT * FROM promo WHERE id = ?");
+        if ($stmt->execute(array($id))) {
+            while ($row = $stmt->fetch()) {
+                $promo = $this->buildPromo($row);
+            }
+        }
+        return $promo;
     }
 
     private function buildPromo(array $row){
@@ -40,6 +46,30 @@ class PromoDAO
         $promo->setAnnee($row['annee']);
         $promo->setLocalisation($row['localisation']);
         return $promo;
+    }
+
+    public function getListLoc(){
+        $dbh = $this->getDb();
+        foreach($dbh->query('SELECT * FROM localisations') as $row) {
+            $locs[] = $row['localisation'];
+        }
+        return $locs;
+    }
+
+    public function getListAnnee(){
+        $dbh = $this->getDb();
+        foreach($dbh->query('SELECT * FROM annee') as $row) {
+            $annees[] = $row['annee'];
+        }
+        return $annees;
+    }
+
+    public function getListCycle(){
+        $dbh = $this->getDb();
+        foreach($dbh->query('SELECT * FROM cycles') as $row) {
+            $cycles[] = $row['cycle'];
+        }
+        return $cycles;
     }
 
     /**
