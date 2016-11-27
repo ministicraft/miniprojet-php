@@ -11,24 +11,41 @@ namespace App\Model;
 
 class Promo
 {
-    private $type;
+    private $id;
+    private $cycle;
     private $annee;
     private $localisation;
 
     /**
      * @return mixed
      */
-    public function getType()
+    public function getId()
     {
-        return $this->type;
+        return $this->id;
     }
 
     /**
-     * @param mixed $type
+     * @param mixed $id
      */
-    public function setType($type)
+    public function setId($id)
     {
-        $this->type = $type;
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCycle()
+    {
+        return $this->cycle;
+    }
+
+    /**
+     * @param mixed $cycle
+     */
+    public function setCycle($cycle)
+    {
+        $this->cycle = $cycle;
     }
 
     /**

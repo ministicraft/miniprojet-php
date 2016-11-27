@@ -51,7 +51,8 @@ function getPromos()
 
     foreach ($promos as $promo){
         $output[] = array(
-            "type" => $promo->getType(),
+            "id" => $promo->getId(),
+            "type" => $promo->getCycle(),
             "annee" => $promo->getAnnee(),
             "localisation" => $promo->getLocalisation(),
         );

@@ -35,7 +35,8 @@ class PromoDAO
 
     private function buildPromo(array $row){
         $promo = new Promo();
-        $promo->setType($row['type']);
+        $promo->setId($row['id']);
+        $promo->setCycle($row['cycle']);
         $promo->setAnnee($row['annee']);
         $promo->setLocalisation($row['localisation']);
         return $promo;
