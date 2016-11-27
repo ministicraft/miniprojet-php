@@ -24,18 +24,14 @@ include 'header.php';
                         <label for="cycle">Nouveau Cylce</label>
                     </div>
                     <div class="input-field col s12">
-                        <select id="year">
+                        <select id="select_annee">
                             <option value="" disabled selected>Choisisser une année</option>
-                            <option value="1">Option 1</option>
-                            <option value="2">Option 2</option>
                         </select>
                         <label>Année</label>
                     </div>
                     <div class="input-field col s12">
                         <select id="select_loc">
                             <option value="" disabled selected>Localisation</option>
-                            <option value="1">Brest</option>
-                            <option value="2">Renne</option>
                             <option id="other" value="other">Autre</option>
                         </select>
                         <label>Localisation</label>
@@ -65,7 +61,7 @@ include 'header.php';
                 <h4>Add a promo</h4>
                 <form>
                     <div class="input-field col s12">
-                        <select id="select_cycle">
+                        <select id="edit_select_cycle">
                             <option value="" disabled selected>Choisisser un Cycle</option>
                             <option id="other" value="other">Autre</option>
                         </select>
@@ -76,13 +72,13 @@ include 'header.php';
                         <label for="cycle">Nouveau Cylce</label>
                     </div>
                     <div class="input-field col s12">
-                        <select id="select_annee">
+                        <select id="edit_select_annee">
                             <option value="" disabled selected>Choisisser une année</option>
                         </select>
                         <label>Année</label>
                     </div>
                     <div class="input-field col s12">
-                        <select id="select_loc">
+                        <select id="edit_select_loc">
                             <option value="" disabled selected>Localisation</option>
                             <option id="other" value="other">Autre</option>
                         </select>
@@ -123,6 +119,7 @@ include 'header.php';
                 var items = [];
                 $.each( data, function( key, val ) {
                     $("#select_cycle").append("<option value="+val+">"+val+"</option>");
+                    $("#edit_select_cycle").append("<option value="+val+">"+val+"</option>");
                 });
                 $(document).ready(function() {
                     $('select').material_select();
@@ -133,6 +130,7 @@ include 'header.php';
                 var items = [];
                 $.each( data, function( key, val ) {
                     $("#select_loc").append("<option value="+val+">"+val+"</option>");
+                    $("#edit_select_loc").append("<option value="+val+">"+val+"</option>");
                 });
                 $(document).ready(function() {
                     $('select').material_select();
@@ -143,6 +141,7 @@ include 'header.php';
                 var items = [];
                 $.each( data, function( key, val ) {
                     $("#select_annee").append("<option value="+val+">"+val+"</option>");
+                    $("#edit_select_annee").append("<option value="+val+">"+val+"</option>");
                 });
                 $(document).ready(function() {
                     $('select').material_select();
