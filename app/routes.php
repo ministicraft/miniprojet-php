@@ -10,6 +10,8 @@ use App\DAO\DocumentDAO;
 use App\DAO\PromoDAO;
 
 $GLOBALS['db'] = new PDO('mysql:host=localhost;dbname=doc_rentree', 'rentree', 'rentree');
+$GLOBALS['documentDAO'] = new DocumentDAO($GLOBALS['db']);
+$GLOBALS['promoDAO'] = new PromoDAO($GLOBALS['db']);
 
 dispatch('/', 'hello');
 function hello()
@@ -29,7 +31,7 @@ function documents()
 dispatch('/api/documents', 'getDocuments');
 function getDocuments()
 {
-    $dao = new DocumentDAO($GLOBALS['db']);
+    $dao = $GLOBALS['documentDAO'];
     $documents = $dao->getList();
 
     foreach ($documents as $document){
@@ -46,7 +48,7 @@ function getDocuments()
 dispatch('/api/promos', 'getPromos');
 function getPromos()
 {
-    $dao = new PromoDAO($GLOBALS['db']);
+    $dao = $GLOBALS['promoDAO'];
     $promos = $dao->getList();
 
     foreach ($promos as $promo){
@@ -63,7 +65,7 @@ dispatch('/api/promos/:id', 'getPromo');
 function getPromo()
 {
     $id = params('id');
-    $dao = new PromoDAO($GLOBALS['db']);
+    $dao = $GLOBALS['promoDAO'];
     $promo = $dao->get($id);
 
     $output[] = array(
@@ -77,7 +79,7 @@ function getPromo()
 dispatch('/api/locs', 'getLocs');
 function getLocs()
 {
-    $dao = new PromoDAO($GLOBALS['db']);
+    $dao = $GLOBALS['promoDAO'];
     $locs = $dao->getListLoc();
 
     return json_encode($locs);
@@ -85,7 +87,7 @@ function getLocs()
 dispatch('/api/annees', 'getAnnees');
 function getAnnees()
 {
-    $dao = new PromoDAO($GLOBALS['db']);
+    $dao = $GLOBALS['promoDAO'];
     $annees = $dao->getListAnnee();
 
     return json_encode($annees);
@@ -93,8 +95,27 @@ function getAnnees()
 dispatch('/api/cycles', 'getCycles');
 function getCycles()
 {
-    $dao = new PromoDAO($GLOBALS['db']);
+    $dao = $GLOBALS['promoDAO'];
     $cycles = $dao->getListCycle();
 
     return json_encode($cycles);
+}
+dispatch_post('/api/cycles', 'postCycle');
+function postCycle()
+{
+    $dao = $GLOBALS['promoDAO'];
+    $dao->addCycle($_POST['cycle']);
+}
+dispatch_post('/api/locs', 'postLoc');
+function postLoc()
+{
+    $dao = $GLOBALS['promoDAO'];
+    $dao->addLoc($_POST['loc']);
+}
+dispatch_post('/api/promos', 'postPromo');
+function postPromo()
+{
+    $dao = $GLOBALS['promoDAO'];
+    $dao->addPromo($_POST['cycle'],$_POST['loc'],$_POST['annee']);
+    return print_r($_POST);
 }

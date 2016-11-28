@@ -72,6 +72,22 @@ class PromoDAO
         return $cycles;
     }
 
+    public function addCycle($cycle){
+        $dbh = $this->getDb();
+        $stmt = $dbh->prepare("INSERT INTO  doc_rentree.cycles (cycle)VALUES (?)");
+        $stmt->execute(array($cycle));
+    }
+    public function addLoc($loc){
+        $dbh = $this->getDb();
+        $stmt = $dbh->prepare("INSERT INTO  doc_rentree.localisations (localisation)VALUES (?)");
+        $stmt->execute(array($loc));
+    }
+    public function addPromo($cycle,$loc,$annee){
+        $dbh = $this->getDb();
+        $stmt = $dbh->prepare("INSERT INTO  doc_rentree.promo (id ,cycle ,localisation ,annee)VALUES (NULL , ?, ?, ?)");
+        $stmt->execute(array($cycle,$loc,$annee));
+    }
+
     /**
      * @return mixed
      */

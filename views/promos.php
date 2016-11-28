@@ -9,9 +9,10 @@ include 'header.php';
             <table id="documents" class="striped"></table>
         </div>
         <div id="modal1" class="modal">
+            <form>
             <div class="modal-content">
                 <h4>Add a promo</h4>
-                <form>
+
                     <div class="input-field col s12">
                         <select id="select_cycle">
                             <option value="" disabled selected>Choisisser un Cycle</option>
@@ -40,11 +41,12 @@ include 'header.php';
                         <input placeholder="Nouvelle Ville" id="loc" type="text" class="validate">
                         <label for="loc">Nouvelle Localisation</label>
                     </div>
-                </form>
+
             </div>
             <div class="modal-footer">
-                <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+                <a onclick="add()" href="/promos" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
             </div>
+            </form>
         </div>
         <div id="modal2" class="modal">
             <div class="modal-content">
@@ -96,6 +98,23 @@ include 'header.php';
         </div>
     </main>
     <script>
+        function add() {
+            cycle = $('#select_cycle').val();
+            loc = $('#select_loc').val();
+            annee = $('#select_annee').val()
+            if (cycle=='other'){
+                cycle = $('#cycle').val();
+                $.post( "api/cycles", { cycle: cycle});
+            }
+            if (loc == 'other'){
+                loc = $('#loc').val();
+                $.post( "api/locs", {loc: loc});
+            }
+            console.log(cycle);
+            console.log(loc);
+            console.log(annee);
+            var post = $.post( "api/promos", { cycle: cycle, loc: loc, annee: annee });
+        }
         $(document).ready(function() {
             //perso
             $('#select_cycle').on('change',function(){
@@ -116,7 +135,6 @@ include 'header.php';
             });
 
             $.getJSON( "api/cycles", function( data ) {
-                var items = [];
                 $.each( data, function( key, val ) {
                     $("#select_cycle").append("<option value="+val+">"+val+"</option>");
                     $("#edit_select_cycle").append("<option value="+val+">"+val+"</option>");
@@ -127,7 +145,6 @@ include 'header.php';
 
             });
             $.getJSON( "api/locs", function( data ) {
-                var items = [];
                 $.each( data, function( key, val ) {
                     $("#select_loc").append("<option value="+val+">"+val+"</option>");
                     $("#edit_select_loc").append("<option value="+val+">"+val+"</option>");
@@ -138,7 +155,6 @@ include 'header.php';
 
             });
             $.getJSON( "api/annees", function( data ) {
-                var items = [];
                 $.each( data, function( key, val ) {
                     $("#select_annee").append("<option value="+val+">"+val+"</option>");
                     $("#edit_select_annee").append("<option value="+val+">"+val+"</option>");
