@@ -117,5 +117,10 @@ function postPromo()
 {
     $dao = $GLOBALS['promoDAO'];
     $dao->addPromo($_POST['cycle'],$_POST['loc'],$_POST['annee']);
-    return print_r($_POST);
+}
+dispatch_delete('/api/promos', 'delPromo');
+function delPromo()
+{
+    $dao = $GLOBALS['promoDAO'];
+    $dao->delPromo($_POST['id']);
 }

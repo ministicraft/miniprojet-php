@@ -87,6 +87,11 @@ class PromoDAO
         $stmt = $dbh->prepare("INSERT INTO  doc_rentree.promo (id ,cycle ,localisation ,annee)VALUES (NULL , ?, ?, ?)");
         $stmt->execute(array($cycle,$loc,$annee));
     }
+    public function delPromo($id){
+        $dbh = $this->getDb();
+        $stmt = $dbh->prepare("DELETE FROM doc_rentree.promo WHERE promo.id = ?");
+        $stmt->execute(array($id));
+    }
 
     /**
      * @return mixed

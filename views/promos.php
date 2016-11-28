@@ -54,7 +54,7 @@ include 'header.php';
 
             </div>
             <div class="modal-footer">
-                <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+                <a href="#!" id="del" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
                 <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Disagree</a>
             </div>
         </div>
@@ -116,6 +116,14 @@ include 'header.php';
             var post = $.post( "api/promos", { cycle: cycle, loc: loc, annee: annee });
         }
         $(document).ready(function() {
+            $('#del').click(function () {
+                var row = table.row('.selected').data();
+                var id = row['id'];
+                console.log(row);
+                console.log(id);
+                $.post( "api/promos", { id: id, _method: "DELETE" });
+                table.ajax.reload();
+            });
             //perso
             $('#select_cycle').on('change',function(){
                 if( $(this).val()==="other"){
@@ -208,9 +216,6 @@ include 'header.php';
                     $('#delete').removeClass('disabled');
                     $('#edit').removeClass('disabled');
                 }
-            } );
-            $('#add').click( function () {
-                table.row('.selected');
             } );
         });
     </script>
