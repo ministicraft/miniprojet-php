@@ -54,9 +54,9 @@ function getPromos()
     foreach ($promos as $promo){
         $output[] = array(
             "id" => $promo->getId(),
-            "type" => $promo->getCycle(),
+            "cycle" => $promo->getCycle(),
             "annee" => $promo->getAnnee(),
-            "localisation" => $promo->getLocalisation(),
+            "loc" => $promo->getLocalisation(),
         );
     }
     return json_encode($output);
@@ -70,9 +70,9 @@ function getPromo()
 
     $output[] = array(
         "id" => $promo->getId(),
-        "type" => $promo->getCycle(),
+        "cycle" => $promo->getCycle(),
         "annee" => $promo->getAnnee(),
-        "localisation" => $promo->getLocalisation(),
+        "loc" => $promo->getLocalisation(),
     );
     return json_encode($output);
 }

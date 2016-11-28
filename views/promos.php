@@ -60,7 +60,7 @@ include 'header.php';
         </div>
         <div id="modal3" class="modal">
             <div class="modal-content">
-                <h4>Add a promo</h4>
+                <h4>Edit this promo</h4>
                 <form>
                     <div class="input-field col s12">
                         <select id="edit_select_cycle">
@@ -188,13 +188,13 @@ include 'header.php';
                     dataSrc: ''
                 },
                 columns: [{
-                    data: "type",
+                    data: "cycle",
                     title: "Type"
                 }, {
                     data: "annee",
                     title: "Année"
                 }, {
-                    data: "localisation",
+                    data: "loc",
                     title: "Localisation"
                 },
                 ],
@@ -216,6 +216,16 @@ include 'header.php';
                     $('#delete').removeClass('disabled');
                     $('#edit').removeClass('disabled');
                 }
+                var row = table.row('.selected').data();
+                var cycle = row['cycle'];
+                var loc = row['loc'];
+                var annee = row['annee'];
+                console.log(row);
+                console.log(cycle,loc,annee);
+                $('#edit_select_cycle option[value=' + cycle + ']').prop('selected', true);
+                $('#edit_select_loc option[value=' + loc + ']').prop('selected', true);
+                $('#edit_select_annee option[value=' + annee + ']').prop('selected', true);
+                $('select').material_select();
             } );
         });
     </script>
