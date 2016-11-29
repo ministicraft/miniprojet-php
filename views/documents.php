@@ -109,7 +109,7 @@ include 'header.php';
 
 
                     $("#select_promo").append("<option value="+val['id']+">"+cycle + loc +  annee +"</option>");
-                    $("#edit_select_promo").append("<option value="+val['id']+">"+val['cycle']+" " + val['loc'] + " " + val['annee'] +"</option>");
+                    $("#edit_select_promo").append("<option value="+val['id']+">"+cycle + loc + annee +"</option>");
                 });
                 $(document).ready(function() {
                     $('select').material_select();
