@@ -58,35 +58,29 @@ include 'header.php';
         </div>
         <div id="modal3" class="modal">
             <div class="modal-content">
-                <h4>Add a promo</h4>
+                <h4>Edit a document</h4>
                 <form>
                     <div class="input-field col s12">
-                        <select id="edit_select_cycle">
-                            <option value="" disabled selected>Choisisser un Cycle</option>
-                            <option id="other" value="other">Autre</option>
-                        </select>
-                        <label>Cycle</label>
+                        <input type="text" id="input_rank" class="autocomplete">
+                        <label for="autocomplete-input">Rang</label>
                     </div>
-                    <div id="other_cycle" class="input-field col s6" style="display: none">
-                        <input placeholder="Autre cycle" id="cycle" type="text" class="validate">
-                        <label for="cycle">Nouveau Cylce</label>
+                    <div id="other_rank" class="input-field col s6" style="display: none">
+                        <input placeholder="Autre rang" id="rank" type="text" class="validate">
+                        <label for="rank">Nouveau rang</label>
                     </div>
                     <div class="input-field col s12">
-                        <select id="edit_select_annee">
-                            <option value="" disabled selected>Choisisser une année</option>
+                        <select id="edit_select_promo">
+                            <option value="" disabled selected>Choisissez une promo</option>
                         </select>
-                        <label>Année</label>
+                        <label>Promo</label>
                     </div>
                     <div class="input-field col s12">
-                        <select id="edit_select_loc">
-                            <option value="" disabled selected>Localisation</option>
-                            <option id="other" value="other">Autre</option>
-                        </select>
-                        <label>Localisation</label>
+
+                        <label>Fichier</label>
                     </div>
-                    <div id="other_loc" class="input-field col s6" style="display: none">
-                        <input placeholder="Nouvelle Ville" id="loc" type="text" class="validate">
-                        <label for="loc">Nouvelle Localisation</label>
+                    <div id="other_file" class="input-field col s6" style="display: none">
+                        <input placeholder="Nouveau fichier" id="file" type="text" class="validate">
+                        <label for="loc">Nouveau fichier</label>
                     </div>
                 </form>
             </div>
@@ -97,6 +91,18 @@ include 'header.php';
     </main>
     <script>
         $(document).ready(function() {
+
+            $.getJSON( "api/promo", function( data ) {
+                $.each( data, function( key, val ) {
+                    $("#select_promo").append("<option value="+val+">"+val+"</option>");
+                    $("#edit_select_promo").append("<option value="+val+">"+val+"</option>");
+                });
+                $(document).ready(function() {
+                    $('select').material_select();
+                });
+            });
+
+
 
             $('select').material_select();
             $('.modal').modal();
