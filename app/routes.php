@@ -124,3 +124,9 @@ function delPromo()
     $dao = $GLOBALS['promoDAO'];
     $dao->delPromo($_POST['id']);
 }
+dispatch_put('/api/promos', 'editPromo');
+function editPromo()
+{
+    $dao = $GLOBALS['promoDAO'];
+    $dao->updatePromo($_POST['id'],$_POST['cycle'],$_POST['loc'],$_POST['annee']);
+}

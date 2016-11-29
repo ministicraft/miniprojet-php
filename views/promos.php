@@ -44,7 +44,7 @@ include 'header.php';
 
             </div>
             <div class="modal-footer">
-                <a onclick="add()" href="/promos" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+                <a id="add" href="/promos" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
             </div>
             </form>
         </div>
@@ -69,9 +69,9 @@ include 'header.php';
                         </select>
                         <label>Cycle</label>
                     </div>
-                    <div id="other_cycle" class="input-field col s6" style="display: none">
-                        <input placeholder="Autre cycle" id="cycle" type="text" class="validate">
-                        <label for="cycle">Nouveau Cylce</label>
+                    <div id="edit_other_cycle" class="input-field col s6" style="display: none">
+                        <input placeholder="Autre cycle" id="edit_cycle" type="text" class="validate">
+                        <label for="edit_cycle">Nouveau Cylce</label>
                     </div>
                     <div class="input-field col s12">
                         <select id="edit_select_annee">
@@ -86,37 +86,39 @@ include 'header.php';
                         </select>
                         <label>Localisation</label>
                     </div>
-                    <div id="other_loc" class="input-field col s6" style="display: none">
-                        <input placeholder="Nouvelle Ville" id="loc" type="text" class="validate">
-                        <label for="loc">Nouvelle Localisation</label>
+                    <div id="edit_other_loc" class="input-field col s6" style="display: none">
+                        <input placeholder="Nouvelle Ville" id="edit_loc" type="text" class="validate">
+                        <label for="edit_loc">Nouvelle Localisation</label>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+                <a id="post_edit" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
             </div>
         </div>
     </main>
     <script>
-        function add() {
-            cycle = $('#select_cycle').val();
-            loc = $('#select_loc').val();
-            annee = $('#select_annee').val()
-            if (cycle=='other'){
-                cycle = $('#cycle').val();
-                $.post( "api/cycles", { cycle: cycle});
-            }
-            if (loc == 'other'){
-                loc = $('#loc').val();
-                $.post( "api/locs", {loc: loc});
-            }
-            console.log(cycle);
-            console.log(loc);
-            console.log(annee);
-            var post = $.post( "api/promos", { cycle: cycle, loc: loc, annee: annee });
-        }
         $(document).ready(function() {
-            $('#del').click(function () {
+
+            $("#add").click(function () {
+                cycle = $("#select_cycle").val();
+                loc = $("#select_loc").val();
+                annee = $("#select_annee").val()
+                if (cycle=='other'){
+                    cycle = $("#cycle").val();
+                    $.post( "api/cycles", { cycle: cycle});
+                }
+                if (loc == 'other'){
+                    loc = $("#loc").val();
+                    $.post( "api/locs", {loc: loc});
+                }
+                console.log(cycle);
+                console.log(loc);
+                console.log(annee);
+                var post = $.post( "api/promos", { cycle: cycle, loc: loc, annee: annee });
+            });
+
+            $("#del").click(function () {
                 var row = table.row('.selected').data();
                 var id = row['id'];
                 console.log(row);
@@ -124,8 +126,29 @@ include 'header.php';
                 $.post( "api/promos", { id: id, _method: "DELETE" });
                 table.ajax.reload();
             });
+
+            $("#post_edit").click(function () {
+                cycle = $("#edit_select_cycle").val();
+                loc = $("#edit_select_loc").val();
+                annee = $("#edit_select_annee").val();
+                row = table.row('.selected').data();
+                id = row['id'];
+                if (cycle=='other'){
+                    cycle = $("#edit_cycle").val();
+                    $.post( "api/cycles", { cycle: cycle});
+                }
+                if (loc == 'other'){
+                    loc = $("#edit_loc").val();
+                    $.post( "api/locs", {loc: loc});
+                }
+                console.log(cycle);
+                console.log(loc);
+                console.log(annee);
+                $.post( "api/promos", {id: id, cycle: cycle, loc: loc, annee: annee, _method: "PUT" });
+                table.ajax.reload();
+            });
             //perso
-            $('#select_cycle').on('change',function(){
+            $("#select_cycle").on('change',function(){
                 if( $(this).val()==="other"){
                     $("#other_cycle").show()
                 }
@@ -133,12 +156,28 @@ include 'header.php';
                     $("#other_cycle").hide()
                 }
             });
-            $('#select_loc').on('change',function(){
+            $("#select_loc").on('change',function(){
                 if( $(this).val()==="other"){
                     $("#other_loc").show()
                 }
                 else{
                     $("#other_loc").hide()
+                }
+            });
+            $("#edit_select_cycle").on('change',function(){
+                if( $(this).val()==="other"){
+                    $("#edit_other_cycle").show()
+                }
+                else{
+                    $("#edit_other_cycle").hide()
+                }
+            });
+            $("#edit_select_loc").on('change',function(){
+                if( $(this).val()==="other"){
+                    $("#edit_other_loc").show()
+                }
+                else{
+                    $("#edit_other_loc").hide()
                 }
             });
 
@@ -175,10 +214,10 @@ include 'header.php';
 
             //materialize
             $('select').material_select();
-            $('.modal').modal();
+            $(".modal").modal();
 
             //datatable
-             var table = $('#documents').DataTable({
+             var table = $("#documents").DataTable({
                 oLanguage: {
                     sUrl: "/js/French.json",
                 },
@@ -204,17 +243,17 @@ include 'header.php';
                     [0, "asc"]
                 ],
             });
-            $('#documents tbody').on( 'click', 'tr', function () {
+            $("#documents tbody").on( 'click', 'tr', function () {
                 if ( $(this).hasClass('selected') ) {
                     $(this).removeClass('selected');
-                    $('#delete').addClass('disabled');
-                    $('#edit').addClass('disabled');
+                    $("#delete").addClass('disabled');
+                    $("#edit").addClass('disabled');
                 }
                 else {
                     table.$('tr.selected').removeClass('selected');
                     $(this).addClass('selected');
-                    $('#delete').removeClass('disabled');
-                    $('#edit').removeClass('disabled');
+                    $("#delete").removeClass('disabled');
+                    $("#edit").removeClass('disabled');
                 }
                 var row = table.row('.selected').data();
                 var cycle = row['cycle'];
@@ -222,9 +261,9 @@ include 'header.php';
                 var annee = row['annee'];
                 console.log(row);
                 console.log(cycle,loc,annee);
-                $('#edit_select_cycle option[value=' + cycle + ']').prop('selected', true);
-                $('#edit_select_loc option[value=' + loc + ']').prop('selected', true);
-                $('#edit_select_annee option[value=' + annee + ']').prop('selected', true);
+                $('#edit_select_cycle option[value="' + cycle + '"]').prop('selected', true);
+                $('#edit_select_loc option[value="' + loc + '"]').prop('selected', true);
+                $('#edit_select_annee option[value="' + annee + '"]').prop('selected', true);
                 $('select').material_select();
             } );
         });

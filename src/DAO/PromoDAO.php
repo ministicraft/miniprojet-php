@@ -92,6 +92,11 @@ class PromoDAO
         $stmt = $dbh->prepare("DELETE FROM doc_rentree.promo WHERE promo.id = ?");
         $stmt->execute(array($id));
     }
+    public function updatePromo($id,$cycle,$loc,$annee){
+        $dbh = $this->getDb();
+        $stmt = $dbh->prepare("UPDATE  doc_rentree.promo SET  cycle = ?, localisation = ?, annee = ? WHERE  promo.id = ?");
+        $stmt->execute(array($cycle,$loc,$annee,$id));
+    }
 
     /**
      * @return mixed
