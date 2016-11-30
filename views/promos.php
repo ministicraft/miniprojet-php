@@ -15,18 +15,18 @@ include 'header.php';
 
                     <div class="input-field col s12">
                         <select id="select_cycle">
-                            <option value="" disabled selected>Choisisser un Cycle</option>
+                            <option value="" disabled selected>Choisissez un cycle</option>
                             <option id="other" value="other">Autre</option>
                         </select>
                         <label>Cycle</label>
                     </div>
                     <div id="other_cycle" class="input-field col s6" style="display: none">
                         <input placeholder="Autre cycle" id="cycle" type="text" class="validate">
-                        <label for="cycle">Nouveau Cylce</label>
+                        <label for="cycle">Nouveau cycle</label>
                     </div>
                     <div class="input-field col s12">
                         <select id="select_annee">
-                            <option value="" disabled selected>Choisisser une année</option>
+                            <option value="" disabled selected>Choisissez une année</option>
                         </select>
                         <label>Année</label>
                     </div>
@@ -38,8 +38,8 @@ include 'header.php';
                         <label>Localisation</label>
                     </div>
                     <div id="other_loc" class="input-field col s6" style="display: none">
-                        <input placeholder="Nouvelle Ville" id="loc" type="text" class="validate">
-                        <label for="loc">Nouvelle Localisation</label>
+                        <input placeholder="Nouvelle ville" id="loc" type="text" class="validate">
+                        <label for="loc">Nouvelle localisation</label>
                     </div>
 
             </div>
@@ -50,7 +50,7 @@ include 'header.php';
         </div>
         <div id="modal2" class="modal">
             <div class="modal-content">
-                <p>Ëtes vous sure de vouloir supprimer cette promo ?</p>
+                <p>Ëtes-vous sûr(e) de vouloir supprimer cette promo ?</p>
 
             </div>
             <div class="modal-footer">
@@ -64,18 +64,18 @@ include 'header.php';
                 <form>
                     <div class="input-field col s12">
                         <select id="edit_select_cycle">
-                            <option value="" disabled selected>Choisisser un Cycle</option>
+                            <option value="" disabled selected>Choisissez un cycle</option>
                             <option id="other" value="other">Autre</option>
                         </select>
                         <label>Cycle</label>
                     </div>
                     <div id="edit_other_cycle" class="input-field col s6" style="display: none">
                         <input placeholder="Autre cycle" id="edit_cycle" type="text" class="validate">
-                        <label for="edit_cycle">Nouveau Cylce</label>
+                        <label for="edit_cycle">Nouveau cycle</label>
                     </div>
                     <div class="input-field col s12">
                         <select id="edit_select_annee">
-                            <option value="" disabled selected>Choisisser une année</option>
+                            <option value="" disabled selected>Choisissez une année</option>
                         </select>
                         <label>Année</label>
                     </div>
@@ -87,8 +87,8 @@ include 'header.php';
                         <label>Localisation</label>
                     </div>
                     <div id="edit_other_loc" class="input-field col s6" style="display: none">
-                        <input placeholder="Nouvelle Ville" id="edit_loc" type="text" class="validate">
-                        <label for="edit_loc">Nouvelle Localisation</label>
+                        <input placeholder="Nouvelle ville" id="edit_loc" type="text" class="validate">
+                        <label for="edit_loc">Nouvelle localisation</label>
                     </div>
                 </form>
             </div>
@@ -103,7 +103,7 @@ include 'header.php';
             $("#add").click(function () {
                 cycle = $("#select_cycle").val();
                 loc = $("#select_loc").val();
-                annee = $("#select_annee").val()
+                annee = $("#select_annee").val();
                 if (cycle=='other'){
                     cycle = $("#cycle").val();
                     $.post( "api/cycles", { cycle: cycle});
@@ -228,7 +228,7 @@ include 'header.php';
                 },
                 columns: [{
                     data: "cycle",
-                    title: "Type"
+                    title: "Cycle"
                 }, {
                     data: "annee",
                     title: "Année"

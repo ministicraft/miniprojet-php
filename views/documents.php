@@ -12,37 +12,26 @@ include 'header.php';
             <form>
                 <div class="modal-content">
                     <h4>Add a document</h4>
-                        <div class="input-field col s12">
+                    <div class="input-field col s12">
                             <select id="select_promo">
-                                <option value="" disabled selected>choisissez une promo</option>
+                                <option value="" disabled selected>Choisissez une promo</option>
                                 <option id="other" value="other">Autre</option>
                             </select>
                             <label>Promo</label>
                         </div>
-                        <div id="other_cycle" class="input-field col s6" style="display: none">
-                            <input placeholder="Autre cycle" id="cycle" type="text" class="validate">
-                            <label for="cycle">Rang</label>
+                    <div class="input-field col s12">
+                        <input type="text" id="add_input_rank">
+                        <label>Rang</label>
+                    </div>
+                    <div class="file-field input-field">
+                        <div class="btn">
+                            <span>File</span>
+                            <input type="file">
                         </div>
-                        <div class="file-field input-field">
-                            <div class="btn">
-                                <span>File</span>
-                                <input type="file">
-                            </div>
-                            <div class="file-path-wrapper">
-                                <input class="file-path validate" type="text">
-                            </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text">
                         </div>
-                        <div class="input-field col s12">
-                            <select id="select_loc">
-                                <option value="" disabled selected>Localisation</option>
-                                <option id="other" value="other">Autre</option>
-                            </select>
-                            <label>Localisation</label>
-                        </div>
-                        <div id="other_loc" class="input-field col s6" style="display: none">
-                            <input placeholder="Nouvelle Ville" id="loc" type="text" class="validate">
-                            <label for="loc">Nouvelle Localisation</label>
-                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
@@ -51,7 +40,7 @@ include 'header.php';
         </div>
         <div id="modal2" class="modal">
             <div class="modal-content">
-                <p>Ëtes vous sure de vouloir supprimer cette promo ?</p>
+                <p>Ëtes-vous sûr(e) de vouloir supprimer ce document ?</p>
 
             </div>
             <div class="modal-footer">
@@ -70,16 +59,19 @@ include 'header.php';
                         <label>Promo</label>
                     </div>
                     <div class="input-field col s12">
-                        <input type="text" id="input_rank" class="autocomplete">
-                        <label for="autocomplete-input">Rang</label>
-                    </div>
-                    <div id="other_rank" class="input-field col s6" style="display: none">
-                        <input placeholder="Autre rang" id="rank" type="text" class="validate">
-                        <label for="rank">Nouveau rang</label>
+                        <input type="text" id="edit_input_rank">
+                        <label>Rang</label>
                     </div>
                     <div class="input-field col s12">
-
-                        <label>Fichier</label>
+                        <div class="file-field input-field">
+                            <div class="btn">
+                                <span>File</span>
+                                <input type="file">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text">
+                            </div>
+                        </div>
                     </div>
                     <div id="other_file" class="input-field col s6" style="display: none">
                         <input placeholder="Nouveau fichier" id="file" type="text" class="validate">
@@ -94,6 +86,20 @@ include 'header.php';
     </main>
     <script>
         $(document).ready(function() {
+
+            $("#post_edit").click(function () {
+                promo = $("#edit_select_promo").val();
+                rank = $("#edit_input_rank").val();
+                //File ?
+                row = table.row('.selected').data();
+                id = row['id'];
+
+                console.log(promo);
+                console.log(rank);
+                //File ?
+                $.post( "api/documents", {id: id, promo: promo, rank: rank, annee: annee, _method: "PUT" });
+                table.ajax.reload();
+            });
 
             $.getJSON( "api/promos", function( data ) {
                 $.each( data, function( key, val ) {
