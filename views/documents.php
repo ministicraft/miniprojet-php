@@ -9,33 +9,43 @@ include 'header.php';
             <table id="documents" class="striped"></table>
         </div>
         <div id="modal1" class="modal">
-            <form id="addForm">
+            <form>
                 <div class="modal-content">
                     <h4>Add a document</h4>
                         <div class="input-field col s12">
                             <select id="select_promo">
                                 <option value="" disabled selected>choisissez une promo</option>
+                                <option id="other" value="other">Autre</option>
                             </select>
                             <label>Promo</label>
+                        </div>
+                        <div id="other_cycle" class="input-field col s6" style="display: none">
+                            <input placeholder="Autre cycle" id="cycle" type="text" class="validate">
+                            <label for="cycle">Rang</label>
                         </div>
                         <div class="file-field input-field">
                             <div class="btn">
                                 <span>File</span>
-                                <input id="fileupload" type="file">
+                                <input type="file">
                             </div>
                             <div class="file-path-wrapper">
-                                <input class="file-path validate" type="text" name="file">
+                                <input class="file-path validate" type="text">
                             </div>
                         </div>
                         <div class="input-field col s12">
-                            <select id="select_rang">
-                                <option value="" disabled selected>Rang</option>
+                            <select id="select_loc">
+                                <option value="" disabled selected>Localisation</option>
+                                <option id="other" value="other">Autre</option>
                             </select>
-                            <label>Rang</label>
+                            <label>Localisation</label>
+                        </div>
+                        <div id="other_loc" class="input-field col s6" style="display: none">
+                            <input placeholder="Nouvelle Ville" id="loc" type="text" class="validate">
+                            <label for="loc">Nouvelle Localisation</label>
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <a id="addPost" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+                    <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
                 </div>
             </form>
         </div>
@@ -50,49 +60,35 @@ include 'header.php';
             </div>
         </div>
         <div id="modal3" class="modal">
-            <form>
-                <div class="modal-content">
-                    <h4>Add a document</h4>
+            <div class="modal-content">
+                <h4>Edit a document</h4>
+                <form>
                     <div class="input-field col s12">
-                        <select id="select_promo">
-                            <option value="" disabled selected>choisissez une promo</option>
+                        <select id="edit_select_promo">
+                            <option value="" disabled selected>Choisissez une promo</option>
                         </select>
                         <label>Promo</label>
                     </div>
-                    <div class="file-field input-field">
-                        <div class="btn">
-                            <span>File</span>
-                            <input id="fileupload" type="file">
-                        </div>
-                        <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text" name="file">
-                        </div>
+                    <div class="input-field col s12">
+                        <input type="text" id="input_rank" class="autocomplete">
+                        <label for="autocomplete-input">Rang</label>
+                    </div>
+                    <div id="other_rank" class="input-field col s6" style="display: none">
+                        <input placeholder="Autre rang" id="rank" type="text" class="validate">
+                        <label for="rank">Nouveau rang</label>
                     </div>
                     <div class="input-field col s12">
-                        <select id="select_rang">
-                            <option value="" disabled selected>Rang</option>
-                        </select>
-                        <label>Rang</label>
+
+                        <label>Fichier</label>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
-                </div>
-            </form>
-        </div>
-        <div id="loadingModal" class="modal">
-            <div class="modal-content center" style="height: 100%">
-                <div class="preloader-wrapper big active">
-                    <div class="spinner-layer spinner-blue-only">
-                        <div class="circle-clipper left">
-                            <div class="circle"></div>
-                        </div><div class="gap-patch">
-                            <div class="circle"></div>
-                        </div><div class="circle-clipper right">
-                            <div class="circle"></div>
-                        </div>
+                    <div id="other_file" class="input-field col s6" style="display: none">
+                        <input placeholder="Nouveau fichier" id="file" type="text" class="validate">
+                        <label for="loc">Nouveau fichier</label>
                     </div>
-                </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
             </div>
         </div>
     </main>
@@ -120,37 +116,20 @@ include 'header.php';
                 });
             });
 
-            $('#addPost').on('click', function() {
-                //$('#modal1').modal('close');
-                $('#loadingModal').modal('open');
-                var file_data = $('#fileupload').prop('files')[0];
-                var form_data = new FormData();
-                form_data.append('file', file_data);
-                alert(form_data);
-                $.ajax({
-                    url: 'api/documents', // point to server-side PHP script
-                    dataType: 'text',  // what to expect back from the PHP script, if anything
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    data: form_data,
-                    type: 'post',
-                    success: function(php_script_response){
-                        $('#loadingModal').modal('close');
-                        alert(php_script_response); // display response from the PHP script, if any
-                    }
-                });
+            var fd = new FormData(document.querySelector("form"));
+            fd.append("CustomField", "This is some extra data");
+            $.ajax({
+                url: "stash.php",
+                type: "POST",
+                data: fd,
+                processData: false,  // tell jQuery not to process the data
+                contentType: false   // tell jQuery not to set contentType
             });
 
 
 
             $('select').material_select();
             $('.modal').modal();
-            $('#loadingModal').modal({
-                dismissible: false,
-                starting_top: '25%',
-                ending_top: '25%'
-            });
 
             var table = $('#documents').DataTable({
                 oLanguage: {
