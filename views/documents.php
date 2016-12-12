@@ -10,7 +10,7 @@ include 'header.php';
         </div>
         <div id="modal1" class="modal">
             <form>
-                <div class="modal-content">
+                <div class="modal-content row">
                     <h4>Add a document</h4>
                         <div class="input-field col s12">
                             <select id="select_promo">
@@ -18,7 +18,7 @@ include 'header.php';
                             </select>
                             <label>Promo</label>
                         </div>
-                        <div class="file-field input-field">
+                        <div class="file-field input-field col s12">
                             <div class="btn">
                                 <span>File</span>
                                 <input id="fileupload" type="file">
@@ -27,14 +27,12 @@ include 'header.php';
                                 <input class="file-path validate" type="text">
                             </div>
                         </div>
-                        <div class="input-field col s6">
+                        <div class="input-field col s12">
                             <input placeholder="libelle" id="libelle" type="text" class="validate">
                             <label for="libelle">Libelle</label>
                         </div>
-                        <div class="input-field col s12">
-                            <select id="select_rang">
-                                <option value="" disabled selected>Rang</option>
-                            </select>
+                        <div class="input-field col s2">
+                            <input id="rang" type="number" name="rang">
                             <label>Rang</label>
                         </div>
                 </div>
@@ -129,7 +127,7 @@ include 'header.php';
                 //$('#processing').modal('open');
                 var file_data = $('#fileupload').prop('files')[0];
                 var libelle = $('#libelle').val();
-                var rang =  $('#select_rang').val();
+                var rang =  $('#rang').val();
                 var promo = $('#select_promo').val();
                 console.log(libelle,rang,promo);
                 var form_data = new FormData();
@@ -149,6 +147,7 @@ include 'header.php';
                     success: function(php_script_response){
                         $('#processing').modal('close');
                         alert(php_script_response); // display response from the PHP script, if any
+                        table.ajax.reload();
                     }
                 });
             });
@@ -174,14 +173,14 @@ include 'header.php';
                     dataSrc: ''
                 },
                 columns: [{
-                    data: "id",
-                    title: "Identifiant"
+                    data: "promo",
+                    title: "Promo"
                 }, {
                     data: "rang",
                     title: "Rang"
                 }, {
-                    data: "promo",
-                    title: "Promo"
+                    data: "libelle",
+                    title: "libelle"
                 }, {
                     data: "fichier",
                     title: "Fichier"
@@ -189,7 +188,7 @@ include 'header.php';
                 paging: false,
                 info: false,
                 order: [
-                    [0, "asc"]
+                    [0, "asc"],[1,"asc"]
                 ],
             });
 

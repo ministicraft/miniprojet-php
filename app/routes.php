@@ -139,18 +139,36 @@ function editPromo()
 dispatch_post('/api/documents', 'addDocument');
 function addDocument()
 {
-    //$dao = $GLOBALS['documentDAO'];
+    $documentDAO = $GLOBALS['documentDAO'];
     $promoDAO = $GLOBALS['promoDAO'];
 
     $rang = $_POST['rang'];
-    $tempPromo = $promoDAO->get($_POST['promo']);
-    if($tempPromo->getLocalisation()!='N/A') {
-        $promo = $tempPromo->getCycle() . '_' . $tempPromo->getLocalisation() . '_' . $tempPromo->getAnnee();
-    } else {
-        $promo = $tempPromo->getCycle() . '_' . $tempPromo->getAnnee();
+    echo $_POST['promo'];
+    if($_POST['promo'] != 'null') {
+        $tempPromo = $promoDAO->get($_POST['promo']);
+        if ($tempPromo->getLocalisation() != 'N/A' && $tempPromo->getAlternance() != "") {
+            if ($tempPromo->getAlternance() == 1) {
+                $promo = $tempPromo->getCycle() . '_' . $tempPromo->getLocalisation() . '_' . $tempPromo->getAnnee() . '_ALT';
+            } else {
+                $promo = $tempPromo->getCycle() . '_' . $tempPromo->getLocalisation() . '_' . $tempPromo->getAnnee() . '_NONALT';
+            }
+        } else if ($tempPromo->getLocalisation() != 'N/A') {
+            $promo = $tempPromo->getCycle() . '_' . $tempPromo->getLocalisation() . '_' . $tempPromo->getAnnee();
+        } else {
+            $promo = $tempPromo->getCycle() . '_' . $tempPromo->getAnnee();
+        }
+    } else{
+        $tempPromo = null;
+        $promo = "";
     }
     $libelle = $_POST['libelle'];
-    $fichier = $GLOBALS['fileLoc'] . $_FILES['file']['name'];
+    if ($tempPromo == null) {
+        $fichier = $_FILES['file']['name'];
+    } else if ($tempPromo->getAnnee() == 'A1' || $tempPromo->getAnnee() == 'A2') {
+        $fichier = 'A12/' . $_FILES['file']['name'];
+    } else {
+        $fichier = 'A345/' . $_FILES['file']['name'];
+    }
 
     $data[] = [$rang,$promo,$libelle,$fichier];
 
@@ -158,8 +176,14 @@ function addDocument()
         echo 'Error: ' . $_FILES['file']['error'] . '<br>';
     }
     else {
-        //$dao->addDocument($rang,$promo,$libelle,$fichier);
-        move_uploaded_file($_FILES['file']['tmp_name'], $GLOBALS['fileLoc'] . $_FILES['file']['name']);
+        $documentDAO->addDocument($rang,$promo,$libelle,$fichier);
+        if($tempPromo == null){
+            move_uploaded_file($_FILES['file']['tmp_name'], $GLOBALS['fileLoc'] . $_FILES['file']['name']);
+        }else if($tempPromo->getAnnee()=='A1' || $tempPromo->getAnnee()=='A2') {
+            move_uploaded_file($_FILES['file']['tmp_name'], $GLOBALS['fileLoc'] . 'A12/' . $_FILES['file']['name']);
+        }else {
+            move_uploaded_file($_FILES['file']['tmp_name'], $GLOBALS['fileLoc'] .'A345/'. $_FILES['file']['name']);
+        }
     }
     echo print_r($data);
 }
