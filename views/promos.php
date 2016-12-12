@@ -31,8 +31,15 @@ include 'header.php';
                         <label>Année</label>
                     </div>
                     <div class="input-field col s12">
+                        <select id="select_alternance">
+                            <option id="sans" value="">Sans</option>
+                            <option id="alt" value="1">Alternant</option>
+                            <option id="non_alt" value="0">Non Alternant</option>
+                        </select>
+                        <label>Alternance</label>
+                    </div>
+                    <div class="input-field col s12">
                         <select id="select_loc">
-                            <option value="" disabled selected>Localisation</option>
                             <option id="other" value="other">Autre</option>
                         </select>
                         <label>Localisation</label>
@@ -44,7 +51,7 @@ include 'header.php';
 
             </div>
             <div class="modal-footer">
-                <a id="add" href="/promos" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+                <a id="post_add" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
             </div>
             </form>
         </div>
@@ -80,8 +87,15 @@ include 'header.php';
                         <label>Année</label>
                     </div>
                     <div class="input-field col s12">
+                        <select id="edit_select_alternance">
+                            <option id="sans" value="">Sans</option>
+                            <option id="alt" value="1">Alternant</option>
+                            <option id="non_alt" value="0">Non Alternant</option>
+                        </select>
+                        <label>Alternance</label>
+                    </div>
+                    <div class="input-field col s12">
                         <select id="edit_select_loc">
-                            <option value="" disabled selected>Localisation</option>
                             <option id="other" value="other">Autre</option>
                         </select>
                         <label>Localisation</label>
@@ -100,10 +114,11 @@ include 'header.php';
     <script>
         $(document).ready(function() {
 
-            $("#add").click(function () {
+            $("#post_add").click(function () {
                 cycle = $("#select_cycle").val();
                 loc = $("#select_loc").val();
                 annee = $("#select_annee").val();
+                alternance = $("#select_alternance").val();
                 if (cycle=='other'){
                     cycle = $("#cycle").val();
                     $.post( "api/cycles", { cycle: cycle});
@@ -115,7 +130,9 @@ include 'header.php';
                 console.log(cycle);
                 console.log(loc);
                 console.log(annee);
-                var post = $.post( "api/promos", { cycle: cycle, loc: loc, annee: annee });
+                console.log(alternance);
+                var post = $.post( "api/promos", { cycle: cycle, loc: loc, annee: annee, alt: alternance });
+                table.ajax.reload();
             });
 
             $("#del").click(function () {
@@ -131,6 +148,7 @@ include 'header.php';
                 cycle = $("#edit_select_cycle").val();
                 loc = $("#edit_select_loc").val();
                 annee = $("#edit_select_annee").val();
+                alternance = $("#edit_select_alternance").val();
                 row = table.row('.selected').data();
                 id = row['id'];
                 if (cycle=='other'){
@@ -144,7 +162,7 @@ include 'header.php';
                 console.log(cycle);
                 console.log(loc);
                 console.log(annee);
-                $.post( "api/promos", {id: id, cycle: cycle, loc: loc, annee: annee, _method: "PUT" });
+                $.post( "api/promos", {id: id, cycle: cycle, loc: loc, annee: annee, alt: alternance, _method: "PUT" });
                 table.ajax.reload();
             });
             //perso
@@ -186,6 +204,7 @@ include 'header.php';
                     $("#select_cycle").append("<option value="+val+">"+val+"</option>");
                     $("#edit_select_cycle").append("<option value="+val+">"+val+"</option>");
                 });
+                $('#edit_select_loc option[value="N/A"]').prop('selected', true);
                 $(document).ready(function() {
                     $('select').material_select();
                 });
@@ -232,8 +251,28 @@ include 'header.php';
                 }, {
                     data: "annee",
                     title: "Année"
+                },{
+                    data: "alt",
+                    render: function(data, type, row) {
+                        if(data == 1){
+                            return "Alternant";
+                        } else if(data == 0){
+                            return "Non Alternant";
+                        } else {
+                            return "";
+                        }
+                    },
+                    title: "Alternance"
+
                 }, {
                     data: "loc",
+                    render: function (data, type, row) {
+                        if(data == "N/A"){
+                            return "";
+                        } else {
+                            return data;
+                        }
+                    },
                     title: "Localisation"
                 },
                 ],
@@ -259,11 +298,17 @@ include 'header.php';
                 var cycle = row['cycle'];
                 var loc = row['loc'];
                 var annee = row['annee'];
+                var alternance = row['alt'];
                 console.log(row);
                 console.log(cycle,loc,annee);
                 $('#edit_select_cycle option[value="' + cycle + '"]').prop('selected', true);
                 $('#edit_select_loc option[value="' + loc + '"]').prop('selected', true);
                 $('#edit_select_annee option[value="' + annee + '"]').prop('selected', true);
+                if(alternance == null) {
+                    $('#edit_select_alternance option[value=""]').prop('selected', true);
+                } else {
+                    $('#edit_select_alternance option[value="' + alternance + '"]').prop('selected', true);
+                }
                 $('select').material_select();
             } );
         });

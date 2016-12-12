@@ -12,6 +12,7 @@ use App\DAO\PromoDAO;
 $GLOBALS['db'] = new PDO('mysql:host=localhost;dbname=doc_rentree', 'rentree', 'rentree');
 $GLOBALS['documentDAO'] = new DocumentDAO($GLOBALS['db']);
 $GLOBALS['promoDAO'] = new PromoDAO($GLOBALS['db']);
+$GLOBALS['fileLoc'] = 'uploads/';
 
 dispatch('/', 'hello');
 function hello()
@@ -57,6 +58,7 @@ function getPromos()
             "cycle" => $promo->getCycle(),
             "annee" => $promo->getAnnee(),
             "loc" => $promo->getLocalisation(),
+            "alt" => $promo->getAlternance(),
         );
     }
     return json_encode($output);
@@ -73,6 +75,7 @@ function getPromo()
         "cycle" => $promo->getCycle(),
         "annee" => $promo->getAnnee(),
         "loc" => $promo->getLocalisation(),
+        "alt" => $promo->getAlternance(),
     );
     return json_encode($output);
 }
@@ -116,7 +119,10 @@ dispatch_post('/api/promos', 'postPromo');
 function postPromo()
 {
     $dao = $GLOBALS['promoDAO'];
-    $dao->addPromo($_POST['cycle'],$_POST['loc'],$_POST['annee']);
+    if($_POST['alt']==''){
+        $_POST['alt']= null;
+    }
+    $dao->addPromo($_POST['cycle'],$_POST['loc'],$_POST['annee'],$_POST['alt']);
 }
 dispatch_delete('/api/promos', 'delPromo');
 function delPromo()
@@ -128,16 +134,32 @@ dispatch_put('/api/promos', 'editPromo');
 function editPromo()
 {
     $dao = $GLOBALS['promoDAO'];
-    $dao->updatePromo($_POST['id'],$_POST['cycle'],$_POST['loc'],$_POST['annee']);
+    $dao->updatePromo($_POST['id'],$_POST['cycle'],$_POST['loc'],$_POST['annee'],$_POST['alt']);
 }
 dispatch_post('/api/documents', 'addDocument');
 function addDocument()
 {
-    $dao = $GLOBALS['documentDAO'];
+    //$dao = $GLOBALS['documentDAO'];
+    $promoDAO = $GLOBALS['promoDAO'];
+
+    $rang = $_POST['rang'];
+    $tempPromo = $promoDAO->get($_POST['promo']);
+    if($tempPromo->getLocalisation()!='N/A') {
+        $promo = $tempPromo->getCycle() . '_' . $tempPromo->getLocalisation() . '_' . $tempPromo->getAnnee();
+    } else {
+        $promo = $tempPromo->getCycle() . '_' . $tempPromo->getAnnee();
+    }
+    $libelle = $_POST['libelle'];
+    $fichier = $GLOBALS['fileLoc'] . $_FILES['file']['name'];
+
+    $data[] = [$rang,$promo,$libelle,$fichier];
+
     if ( 0 < $_FILES['file']['error'] ) {
         echo 'Error: ' . $_FILES['file']['error'] . '<br>';
     }
     else {
-        move_uploaded_file($_FILES['file']['tmp_name'], 'uploads/' . $_FILES['file']['name']);
+        //$dao->addDocument($rang,$promo,$libelle,$fichier);
+        move_uploaded_file($_FILES['file']['tmp_name'], $GLOBALS['fileLoc'] . $_FILES['file']['name']);
     }
+    echo print_r($data);
 }

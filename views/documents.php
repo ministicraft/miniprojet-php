@@ -27,6 +27,10 @@ include 'header.php';
                                 <input class="file-path validate" type="text">
                             </div>
                         </div>
+                        <div class="input-field col s6">
+                            <input placeholder="libelle" id="libelle" type="text" class="validate">
+                            <label for="libelle">Libelle</label>
+                        </div>
                         <div class="input-field col s12">
                             <select id="select_rang">
                                 <option value="" disabled selected>Rang</option>
@@ -122,10 +126,17 @@ include 'header.php';
             });
 
             $('#addPost').click(function() {
-                $('#processing').modal('open');
+                //$('#processing').modal('open');
                 var file_data = $('#fileupload').prop('files')[0];
+                var libelle = $('#libelle').val();
+                var rang =  $('#select_rang').val();
+                var promo = $('#select_promo').val();
+                console.log(libelle,rang,promo);
                 var form_data = new FormData();
                 form_data.append('file', file_data);
+                form_data.append('libelle', libelle);
+                form_data.append('rang', rang);
+                form_data.append('promo', promo);
                 alert(form_data);
                 $.ajax({
                     url: 'api/documents', // point to server-side PHP script

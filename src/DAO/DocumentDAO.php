@@ -20,10 +20,6 @@ class DocumentDAO
     }
 
     public function getList(){
-        /*foreach ($this->getDb()->query('SELECT * FROM document') as $row){
-            $documents[] = $this->buildDocument($row);
-            return $documents;
-        }*/
         $dbh = $this->getDb();
         foreach($dbh->query('SELECT * FROM document') as $row) {
             $documents[] = $this->buildDocument($row);
@@ -36,6 +32,12 @@ class DocumentDAO
         $row = $dbh->query('SELECT * FROM document');
         $document = $this->buildDocument($row);
         return $document;
+    }
+
+    public function addDocument($rang,$promo,$libelle,$fichier){
+        $dbh = $this->getDb();
+        $stmt = $dbh->prepare('INSERT INTO  doc_rentree.document (id ,rang ,promo ,libelle ,fichier)VALUES (NULL , ?, ?, ?, ?)');
+        $stmt->execute(array($rang,$promo,$libelle,$fichier));
     }
 
     /**

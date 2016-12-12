@@ -15,6 +15,23 @@ class Promo
     private $cycle;
     private $annee;
     private $localisation;
+    private $alternance;
+
+    /**
+     * @return mixed
+     */
+    public function getAlternance()
+    {
+        return $this->alternance;
+    }
+
+    /**
+     * @param mixed $alternance
+     */
+    public function setAlternance($alternance)
+    {
+        $this->alternance = $alternance;
+    }
 
     /**
      * @return mixed
