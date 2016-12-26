@@ -5,8 +5,8 @@ include 'header.php';
         <a id="add" class="waves-effect waves-light btn" href="#modal1">Add</a>
         <a id="delete" class="waves-effect waves-light btn disabled" href="#modal2"><i class="material-icons left">remove</i>Remove</a>
         <a id="edit" class="waves-effect waves-light btn disabled" href="#modal3"><i class="material-icons left">edit</i>Edit</a>
-        <div class="container">
-            <table id="documents" class="striped"></table>
+        <div class="card" style="margin: 20px auto; padding:20px; max-width: 80%">
+            <table id="documents" class="striped" width="100%"></table>
         </div>
         <div id="modal1" class="modal">
             <form>

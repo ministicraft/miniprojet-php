@@ -187,3 +187,65 @@ function addDocument()
     }
     echo print_r($data);
 }
+
+dispatch_delete('/api/documents', 'delDocument');
+function delDocument()
+{
+    $dao = $GLOBALS['documentDAO'];
+    $dao->delDocument($_POST['id']);
+    return header("HTTP/1.1 200 OK");
+}
+
+dispatch_put('/api/documents', 'putDocument');
+function putDocument()
+{
+    $documentDAO = $GLOBALS['documentDAO'];
+    $promoDAO = $GLOBALS['promoDAO'];
+
+    $id = $_POST['id'];
+    $rang = $_POST['rang'];
+    echo $_POST['promo'];
+    if ($_POST['promo'] != null) {
+        $tempPromo = $promoDAO->get($_POST['promo']);
+        if ($tempPromo->getLocalisation() != 'N/A' && $tempPromo->getAlternance() != "") {
+            if ($tempPromo->getAlternance() == 1) {
+                $promo = $tempPromo->getCycle() . '_' . $tempPromo->getLocalisation() . '_' . $tempPromo->getAnnee() . '_ALT';
+            } else {
+                $promo = $tempPromo->getCycle() . '_' . $tempPromo->getLocalisation() . '_' . $tempPromo->getAnnee() . '_NONALT';
+            }
+        } else if ($tempPromo->getLocalisation() != 'N/A') {
+            $promo = $tempPromo->getCycle() . '_' . $tempPromo->getLocalisation() . '_' . $tempPromo->getAnnee();
+        } else {
+            $promo = $tempPromo->getCycle() . '_' . $tempPromo->getAnnee();
+        }
+    } else {
+        $tempPromo = null;
+        $promo = "";
+    }
+    $libelle = $_POST['libelle'];
+    /*if ($tempPromo == null) {
+        $fichier = $_FILES['file']['name'];
+    } else if ($tempPromo->getAnnee() == 'A1' || $tempPromo->getAnnee() == 'A2') {
+        $fichier = 'A12/' . $_FILES['file']['name'];
+    } else {
+        $fichier = 'A345/' . $_FILES['file']['name'];
+    }*/
+
+    $data[] = [$id, $rang, $promo, $libelle];
+
+    /*if ( 0 < $_FILES['file']['error'] ) {
+        echo 'Error: ' . $_FILES['file']['error'] . '<br>';
+    }
+    else {
+     */
+    $documentDAO->editDocument($id, $rang, $promo, $libelle);
+    /* if($tempPromo == null){
+         move_uploaded_file($_FILES['file']['tmp_name'], $GLOBALS['fileLoc'] . $_FILES['file']['name']);
+     }else if($tempPromo->getAnnee()=='A1' || $tempPromo->getAnnee()=='A2') {
+         move_uploaded_file($_FILES['file']['tmp_name'], $GLOBALS['fileLoc'] . 'A12/' . $_FILES['file']['name']);
+     }else {
+         move_uploaded_file($_FILES['file']['tmp_name'], $GLOBALS['fileLoc'] .'A345/'. $_FILES['file']['name']);
+     }
+ }*/
+    echo print_r($data);
+}

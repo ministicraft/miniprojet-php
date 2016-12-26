@@ -5,8 +5,8 @@ include 'header.php';
         <a id="add" class="waves-effect waves-light btn" href="#modal1">Add</a>
         <a id="delete" class="waves-effect waves-light btn disabled" href="#modal2"><i class="material-icons left">remove</i>Remove</a>
         <a id="edit" class="waves-effect waves-light btn disabled" href="#modal3"><i class="material-icons left">edit</i>Edit</a>
-        <div class="container">
-            <table id="documents" class="striped"></table>
+        <div class="card" style="margin: 20px auto; padding:20px; max-width: 80%">
+            <table id="documents" class="striped" width="100%"></table>
         </div>
         <div id="modal1" class="modal">
             <form>
@@ -43,12 +43,12 @@ include 'header.php';
         </div>
         <div id="modal2" class="modal">
             <div class="modal-content">
-                <p>Ëtes vous sure de vouloir supprimer cette promo ?</p>
+                <p>Ëtes vous sure de vouloir supprimer ce Document ?</p>
 
             </div>
             <div class="modal-footer">
-                <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
-                <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Disagree</a>
+                <a id="del" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+                <a class=" modal-action modal-close waves-effect waves-green btn-flat">Disagree</a>
             </div>
         </div>
         <div id="modal3" class="modal">
@@ -56,29 +56,22 @@ include 'header.php';
                 <div class="modal-content">
                     <h4>Edit a document</h4>
                     <div class="input-field col s12">
-                        <select id="select_promo">
+                        <select id="edit_select_promo">
                             <option value="" disabled selected>choisissez une promo</option>
                         </select>
                         <label>Promo</label>
                     </div>
-                    <div class="file-field input-field">
-                        <div class="btn">
-                            <span>File</span>
-                            <input type="file">
-                        </div>
-                        <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text">
-                        </div>
-                    </div>
                     <div class="input-field col s12">
-                        <select id="select_rang">
-                            <option value="" disabled selected>Localisation</option>
-                        </select>
+                        <input placeholder="libelle" id="edit_libelle" type="text" class="validate">
+                        <label for="libelle">Libelle</label>
+                    </div>
+                    <div class="input-field col s2">
+                        <input id="edit_rang" type="number" name="rang">
                         <label>Rang</label>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a id="" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+                    <a id="post_edit" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
                 </div>
             </form>
         </div>
@@ -152,6 +145,35 @@ include 'header.php';
                 });
             });
 
+            $("#del").click(function () {
+                var row = table.row('.selected').data();
+                var id = row['id'];
+                console.log(row);
+                console.log(id);
+                $.post("api/documents", {id: id, _method: "DELETE"}).done(function (data) {
+                    table.ajax.reload();
+                });
+            });
+            $("#post_edit").click(function () {
+                var row = table.row('.selected').data();
+                var id = row['id'];
+                var libelle = $('#edit_libelle').val();
+                var rang = $('#edit_rang').val();
+                var promo = $('#edit_select_promo').val();
+                console.log(libelle, rang, promo);
+                var form_data = new FormData();
+                alert(form_data);
+                $.post("api/documents", {
+                    id: id,
+                    libelle: libelle,
+                    rang: rang,
+                    promo: promo,
+                    _method: "PUT"
+                }).done(function (data) {
+                    alert(data);
+                    table.ajax.reload();
+                });
+            });
 
 
             $('select').material_select();
@@ -180,16 +202,18 @@ include 'header.php';
                     title: "Rang"
                 }, {
                     data: "libelle",
-                    title: "libelle"
+                    title: "Libelle"
                 }, {
                     data: "fichier",
                     title: "Fichier"
                 },],
-                paging: false,
+                paging: true,
+                lengthChange: false,
+                pageLength: 20,
                 info: false,
                 order: [
-                    [0, "asc"],[1,"asc"]
-                ],
+                    [0, "asc"]
+                ]
             });
 
             //Buttons available/unavailable
@@ -204,6 +228,17 @@ include 'header.php';
                     $(this).addClass('selected');
                     $('#delete').removeClass('disabled');
                     $('#edit').removeClass('disabled');
+
+                    var row = table.row('.selected').data();
+                    var promo = row['promo'];
+                    var rang = row['rang'];
+                    var libelle = row['libelle'];
+                    console.log(row);
+                    console.log(promo, rang, libelle);
+                    $('#edit_select_promo option[value="' + promo + '"]').prop('selected', true);
+                    $('#edit_rang option[value="' + rang + '"]');
+                    $('#edit_libelle option[value="' + libelle + '"]');
+                    $('select').material_select();
                 }
             } );
             $('#add').click( function () {

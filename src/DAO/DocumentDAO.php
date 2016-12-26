@@ -27,17 +27,20 @@ class DocumentDAO
         return $documents;
     }
 
-    public function get($id){
-        $dbh = new \PDO('mysql:host=localhost;dbname=doc_rentree', 'rentree', 'rentree');
-        $row = $dbh->query('SELECT * FROM document');
-        $document = $this->buildDocument($row);
-        return $document;
+    /**
+     * @return mixed
+     */
+    public function getDb()
+    {
+        return $this->db;
     }
 
-    public function addDocument($rang,$promo,$libelle,$fichier){
-        $dbh = $this->getDb();
-        $stmt = $dbh->prepare('INSERT INTO  doc_rentree.document (id ,rang ,promo ,libelle ,fichier)VALUES (NULL , ?, ?, ?, ?)');
-        $stmt->execute(array($rang,$promo,$libelle,$fichier));
+    /**
+     * @param mixed $db
+     */
+    public function setDb($db)
+    {
+        $this->db = $db;
     }
 
     /**
@@ -54,20 +57,43 @@ class DocumentDAO
         return $document;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDb()
+    public function get($id)
     {
-        return $this->db;
+        $dbh = new \PDO('mysql:host=localhost;dbname=doc_rentree', 'rentree', 'rentree');
+        $row = $dbh->query('SELECT * FROM document');
+        $document = $this->buildDocument($row);
+        return $document;
     }
 
-    /**
-     * @param mixed $db
-     */
-    public function setDb($db)
+    public function addDocument($rang, $promo, $libelle, $fichier)
     {
-        $this->db = $db;
+        $dbh = $this->getDb();
+        $stmt = $dbh->prepare('INSERT INTO  doc_rentree.document (id ,rang ,promo ,libelle ,fichier)VALUES (NULL , ?, ?, ?, ?)');
+        $stmt->execute(array($rang, $promo, $libelle, $fichier));
+    }
+
+    public function delDocument($id)
+    {
+        $dbh = $this->getDb();
+        $stmt = $dbh->prepare("DELETE FROM doc_rentree.document WHERE document.id = ?");
+        $stmt->execute(array($id));
+    }
+
+    public function editDocument($id, $rang, $promo, $libelle)
+    {
+        $dbh = $this->getDb();
+        if ($libelle != null) {
+            $stmt = $dbh->prepare('UPDATE doc_rentree.document SET libelle =  ? WHERE document.id = ?;');
+            $stmt->execute(array($libelle, $id));
+        }
+        if ($rang != null || $rang != 0) {
+            $stmt = $dbh->prepare('UPDATE doc_rentree.document SET rang =  ? WHERE document.id = ?;');
+            $stmt->execute(array($rang, $id));
+        }
+        if ($promo != null) {
+            $stmt = $dbh->prepare('UPDATE doc_rentree.document SET promo =  ? WHERE document.id = ?;');
+            $stmt->execute(array($promo, $id));
+        }
     }
 
 }

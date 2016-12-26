@@ -7,3 +7,9 @@ body {
 main {
     flex: 1 0 auto;
 }
+
+table.striped > tbody > tr.selected:nth-child(odd),
+table.striped > tbody > tr.selected:nth-child(even) {
+    /*Couleur lors de la selection d'une ligne*/
+    background-color: #757575;
+}

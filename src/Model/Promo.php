@@ -16,6 +16,7 @@ class Promo
     private $annee;
     private $localisation;
     private $alternance;
+    private $libelle;
 
     /**
      * @return mixed
@@ -96,4 +97,21 @@ class Promo
     {
         $this->localisation = $localisation;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLibelle()
+    {
+        return $this->libelle;
+    }
+
+    /**
+     * @param mixed $libelle
+     */
+    public function setLibelle($libelle)
+    {
+        $this->libelle = $libelle;
+    }
+
 }
