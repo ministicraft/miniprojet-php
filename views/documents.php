@@ -108,8 +108,8 @@ include 'header.php';
                     annee="_"+val['annee'];
 
 
-                    $("#select_promo").append("<option value="+val['id']+">"+cycle + loc +  annee +"</option>");
-                    $("#edit_select_promo").append("<option value="+val['id']+">"+cycle + loc + annee +"</option>");
+                    $("#select_promo").append("<option value=\""+val['id']+"\">"+cycle + loc +  annee +"</option>");
+                    $("#edit_select_promo").append("<option value=\""+val['id']+"\">"+cycle + loc + annee +"</option>");
                 });
                 $(document).ready(function() {
                     $('select').material_select();

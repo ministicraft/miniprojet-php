@@ -201,8 +201,8 @@ include 'header.php';
 
             $.getJSON( "api/cycles", function( data ) {
                 $.each( data, function( key, val ) {
-                    $("#select_cycle").append("<option value="+val+">"+val+"</option>");
-                    $("#edit_select_cycle").append("<option value="+val+">"+val+"</option>");
+                    $("#select_cycle").append("<option value=\""+val+"\">"+val+"</option>");
+                    $("#edit_select_cycle").append("<option value=\""+val+"\">"+val+"</option>");
                 });
                 $('#edit_select_loc option[value="N/A"]').prop('selected', true);
                 $(document).ready(function() {
@@ -212,8 +212,8 @@ include 'header.php';
             });
             $.getJSON( "api/locs", function( data ) {
                 $.each( data, function( key, val ) {
-                    $("#select_loc").append("<option value="+val+">"+val+"</option>");
-                    $("#edit_select_loc").append("<option value="+val+">"+val+"</option>");
+                    $("#select_loc").append("<option value=\""+val+"\">"+val+"</option>");
+                    $("#edit_select_loc").append("<option value=\""+val+"\">"+val+"</option>");
                 });
                 $(document).ready(function() {
                     $('select').material_select();
@@ -222,8 +222,8 @@ include 'header.php';
             });
             $.getJSON( "api/annees", function( data ) {
                 $.each( data, function( key, val ) {
-                    $("#select_annee").append("<option value="+val+">"+val+"</option>");
-                    $("#edit_select_annee").append("<option value="+val+">"+val+"</option>");
+                    $("#select_annee").append("<option value=\""+val+"\">"+val+"</option>");
+                    $("#edit_select_annee").append("<option value=\""+val+"\">"+val+"</option>");
                 });
                 $(document).ready(function() {
                     $('select').material_select();
