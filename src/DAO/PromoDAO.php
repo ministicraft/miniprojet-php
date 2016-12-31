@@ -46,6 +46,7 @@ class PromoDAO
         $promo->setAnnee($row['annee']);
         $promo->setLocalisation($row['localisation']);
         $promo->setAlternance($row['alt']);
+        $promo->setLibelle($row['libelle']);
         return $promo;
     }
 
@@ -83,20 +84,21 @@ class PromoDAO
         $stmt = $dbh->prepare("INSERT INTO  doc_rentree.localisations (localisation)VALUES (?)");
         $stmt->execute(array($loc));
     }
-    public function addPromo($cycle,$loc,$annee,$alternance){
+    public function addPromo($cycle,$loc,$annee,$alternance,$libelle){
         $dbh = $this->getDb();
-        $stmt = $dbh->prepare("INSERT INTO  doc_rentree.promo (id ,cycle ,localisation ,annee, alt)VALUES (NULL , ?, ?, ?, ?)");
-        $stmt->execute(array($cycle,$loc,$annee,$alternance));
+        $stmt = $dbh->prepare("INSERT INTO  doc_rentree.promo (id ,cycle ,localisation ,annee, alt,libelle)VALUES (NULL , ?, ?, ?, ?,?)");
+        $stmt->execute(array($cycle,$loc,$annee,$alternance,$libelle));
     }
     public function delPromo($id){
         $dbh = $this->getDb();
         $stmt = $dbh->prepare("DELETE FROM doc_rentree.promo WHERE promo.id = ?");
         $stmt->execute(array($id));
     }
-    public function updatePromo($id,$cycle,$loc,$annee,$alternance){
+    public function updatePromo($id,$cycle,$loc,$annee,$alternance,$libelle){
         $dbh = $this->getDb();
-        $stmt = $dbh->prepare("UPDATE  doc_rentree.promo SET  cycle = ?, localisation = ?, annee = ?, alt = ? WHERE  promo.id = ?");
-        $stmt->execute(array($cycle,$loc,$annee,$alternance,$id));
+        if($alternance == '')$alternance=null;
+        $stmt = $dbh->prepare("UPDATE  doc_rentree.promo SET  cycle = ?, localisation = ?, annee = ?, alt = ? , libelle = ? WHERE  promo.id = ?");
+        $stmt->execute(array($cycle,$loc,$annee,$alternance,$libelle,$id));
     }
 
     /**

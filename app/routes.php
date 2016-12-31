@@ -9,7 +9,7 @@
 use App\DAO\DocumentDAO;
 use App\DAO\PromoDAO;
 
-$GLOBALS['db'] = new PDO('mysql:host=localhost;dbname=doc_rentree', 'rentree', 'rentree');
+$GLOBALS['db'] = new PDO('mysql:host=192.168.99.100;dbname=doc_rentree', 'isen2016', 'isen2016');
 $GLOBALS['documentDAO'] = new DocumentDAO($GLOBALS['db']);
 $GLOBALS['promoDAO'] = new PromoDAO($GLOBALS['db']);
 $GLOBALS['fileLoc'] = 'uploads/';
@@ -59,6 +59,7 @@ function getPromos()
             "annee" => $promo->getAnnee(),
             "loc" => $promo->getLocalisation(),
             "alt" => $promo->getAlternance(),
+            "libelle" => $promo->getLibelle(),
         );
     }
     return json_encode($output);
@@ -122,7 +123,7 @@ function postPromo()
     if($_POST['alt']==''){
         $_POST['alt']= null;
     }
-    $dao->addPromo($_POST['cycle'],$_POST['loc'],$_POST['annee'],$_POST['alt']);
+    $dao->addPromo($_POST['cycle'],$_POST['loc'],$_POST['annee'],$_POST['alt'],$_POST['libelle']);
 }
 dispatch_delete('/api/promos', 'delPromo');
 function delPromo()
@@ -133,8 +134,15 @@ function delPromo()
 dispatch_put('/api/promos', 'editPromo');
 function editPromo()
 {
+    echo $_POST['id'].'<br/>';
+    echo $_POST['cycle'].'<br/>';
+    echo $_POST['loc'].'<br/>';
+    echo $_POST['annee'].'<br/>';
+    echo $_POST['alt'].'<br/>';
+    echo $_POST['libelle'].'<br/>';
+
     $dao = $GLOBALS['promoDAO'];
-    $dao->updatePromo($_POST['id'],$_POST['cycle'],$_POST['loc'],$_POST['annee'],$_POST['alt']);
+    $dao->updatePromo($_POST['id'],$_POST['cycle'],$_POST['loc'],$_POST['annee'],$_POST['alt'],$_POST['libelle']);
 }
 dispatch_post('/api/documents', 'addDocument');
 function addDocument()
@@ -146,13 +154,13 @@ function addDocument()
     echo $_POST['promo'];
     if($_POST['promo'] != 'null') {
         $tempPromo = $promoDAO->get($_POST['promo']);
-        if ($tempPromo->getLocalisation() != 'N/A' && $tempPromo->getAlternance() != "") {
+        if (($tempPromo->getLocalisation() != 'N/A' && $tempPromo->getLocalisation() != '') && $tempPromo->getAlternance() != "") {
             if ($tempPromo->getAlternance() == 1) {
                 $promo = $tempPromo->getCycle() . '_' . $tempPromo->getLocalisation() . '_' . $tempPromo->getAnnee() . '_ALT';
             } else {
                 $promo = $tempPromo->getCycle() . '_' . $tempPromo->getLocalisation() . '_' . $tempPromo->getAnnee() . '_NONALT';
             }
-        } else if ($tempPromo->getLocalisation() != 'N/A') {
+        } else if ($tempPromo->getLocalisation() != 'N/A' && $tempPromo->getLocalisation() != '') {
             $promo = $tempPromo->getCycle() . '_' . $tempPromo->getLocalisation() . '_' . $tempPromo->getAnnee();
         } else {
             $promo = $tempPromo->getCycle() . '_' . $tempPromo->getAnnee();

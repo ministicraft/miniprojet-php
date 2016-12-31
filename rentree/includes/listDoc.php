@@ -20,7 +20,9 @@
     if ($promo!="NULL") {   
       
       $promo = $_GET['promo'];
+      echo $promo;
       $key = array_search($promo, $libellePromo);
+      echo $key;
       $DbLink = mysql_connect($DbHost, $DbUser, $DbPassword) or die('erreur de connexion au serveur');
       mysql_select_db($DbName) or die('erreur de connexion a la base de donnees');
       mysql_query("SET NAMES 'utf8'");

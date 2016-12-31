@@ -48,6 +48,10 @@ include 'header.php';
                         <input placeholder="Nouvelle ville" id="loc" type="text" class="validate">
                         <label for="loc">Nouvelle localisation</label>
                     </div>
+                    <div class="input-field col s12">
+                        <input placeholder="Libellé" id="libelle" type="text" class="validate">
+                        <label for="libelle">Libellé</label>
+                    </div>
 
             </div>
             <div class="modal-footer">
@@ -104,6 +108,10 @@ include 'header.php';
                         <input placeholder="Nouvelle ville" id="edit_loc" type="text" class="validate">
                         <label for="edit_loc">Nouvelle localisation</label>
                     </div>
+                    <div class="input-field col s12">
+                        <input placeholder="Libellé" id="edit_libelle" type="text" class="validate">
+                        <label for="edit_libelle">Libellé</label>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -119,6 +127,7 @@ include 'header.php';
                 loc = $("#select_loc").val();
                 annee = $("#select_annee").val();
                 alternance = $("#select_alternance").val();
+                libelle = $("#libelle").val();
                 if (cycle=='other'){
                     cycle = $("#cycle").val();
                     $.post( "api/cycles", { cycle: cycle});
@@ -131,7 +140,8 @@ include 'header.php';
                 console.log(loc);
                 console.log(annee);
                 console.log(alternance);
-                var post = $.post( "api/promos", { cycle: cycle, loc: loc, annee: annee, alt: alternance });
+                console.log(libelle);
+                var post = $.post( "api/promos", { cycle: cycle, loc: loc, annee: annee, alt: alternance,libelle: libelle });
                 table.ajax.reload();
             });
 
@@ -149,6 +159,7 @@ include 'header.php';
                 loc = $("#edit_select_loc").val();
                 annee = $("#edit_select_annee").val();
                 alternance = $("#edit_select_alternance").val();
+                libelle = $("#edit_libelle").val();
                 row = table.row('.selected').data();
                 id = row['id'];
                 if (cycle=='other'){
@@ -162,8 +173,12 @@ include 'header.php';
                 console.log(cycle);
                 console.log(loc);
                 console.log(annee);
-                $.post( "api/promos", {id: id, cycle: cycle, loc: loc, annee: annee, alt: alternance, _method: "PUT" });
-                table.ajax.reload();
+                console.log(alternance);
+                console.log(libelle);
+                $.post( "api/promos", {id: id, cycle: cycle, loc: loc, annee: annee, alt: alternance, libelle:libelle, _method: "PUT" }).done(function (data) {
+                    alert(data);
+                    table.ajax.reload();
+                });
             });
             //perso
             $("#select_cycle").on('change',function(){
@@ -274,6 +289,9 @@ include 'header.php';
                         }
                     },
                     title: "Localisation"
+                }, {
+                        data: "libelle",
+                        title: "Libellé"
                 },
                 ],
                 paging: false,
@@ -294,13 +312,13 @@ include 'header.php';
                     $("#delete").removeClass('disabled');
                     $("#edit").removeClass('disabled');
                 }
-                var row = table.row('.selected').data();
-                var cycle = row['cycle'];
-                var loc = row['loc'];
-                var annee = row['annee'];
-                var alternance = row['alt'];
+                row = table.row('.selected').data();
+                cycle = row['cycle'];
+                loc = row['loc'];
+                annee = row['annee'];
+                alternance = row['alt'];
+                libelle = row['libelle'];
                 console.log(row);
-                console.log(cycle,loc,annee);
                 $('#edit_select_cycle option[value="' + cycle + '"]').prop('selected', true);
                 $('#edit_select_loc option[value="' + loc + '"]').prop('selected', true);
                 $('#edit_select_annee option[value="' + annee + '"]').prop('selected', true);
@@ -309,6 +327,9 @@ include 'header.php';
                 } else {
                     $('#edit_select_alternance option[value="' + alternance + '"]').prop('selected', true);
                 }
+                console.log(libelle);
+                $("#edit_libelle").val(libelle);
+                console.log($("#edit_libelle"));
                 $('select').material_select();
             } );
         });

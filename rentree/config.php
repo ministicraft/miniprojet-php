@@ -9,11 +9,35 @@
   $cle2 = "isen2016";
     
   // informations concernant la base de données
-  $DbHost = "127.0.0.1";
+  $DbHost = "192.168.99.100";
   $DbName = "doc_rentree";
-  $DbUser = "rentree";
-  $DbPassword = "rentree";
-  
+  $DbUser = "isen2016";
+  $DbPassword = "isen2016";
+
+  /*$DbLink = mysql_connect($DbHost, $DbUser, $DbPassword) or die('erreur de connexion au serveur');
+  mysql_select_db($DbName) or die('erreur de connexion a la base de donnees');
+  mysql_query("SET NAMES 'utf8'");
+  $query = "SELECT * FROM promo";
+
+  $result = mysql_query($query);
+  $libellePromo = array();
+
+  while($data = mysql_fetch_array($result)) {
+
+      if (($data['localisation'] != 'N/A' && $data['localisation'] != '') && $data['alt'] != "") {
+          if ($data['alt'] == 1) {
+              $promo = $data['cycle'] . '_' . $data['localisation'] . '_' . $data['annee'] . '_ALT';
+          } else {
+              $promo = $data['cycle'] . '_' . $data['localisation'] . '_' . $data['annee'] . '_NONALT';
+          }
+      } else if ($data['localisation'] != 'N/A' && $data['localisation'] != '') {
+          $promo = $data['cycle'] . '_' . $data['localisation'] . '_' . $data['annee'];
+      } else {
+          $promo = $data['cycle'] . '_' . $data['annee'];
+      }
+      $libellePromo[$data['libelle']] = $promo;
+  }*/
+
   $libellePromo = array (
     "1&#x02B3;&#x1D49; année, Cycle Biologie Sciences et Technologies" => "CBIO_A1",    
     "1&#x02B3;&#x1D49; année, Cycle Sciences de l'Ingénieur" => "CSI_A1",
