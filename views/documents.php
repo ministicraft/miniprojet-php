@@ -97,8 +97,6 @@ include 'header.php';
 
             $.getJSON( "api/promos", function( data ) {
                 $.each( data, function( key, val ) {
-                    console.log(key);
-                    console.log(val);
                     cycle=val['cycle'];
                     if(val['loc']!="N/A") {
                         loc = "_" + val['loc'];
@@ -122,13 +120,11 @@ include 'header.php';
                 var libelle = $('#libelle').val();
                 var rang =  $('#rang').val();
                 var promo = $('#select_promo').val();
-                console.log(libelle,rang,promo);
                 var form_data = new FormData();
                 form_data.append('file', file_data);
                 form_data.append('libelle', libelle);
                 form_data.append('rang', rang);
                 form_data.append('promo', promo);
-                alert(form_data);
                 $.ajax({
                     url: 'api/documents', // point to server-side PHP script
                     dataType: 'text',  // what to expect back from the PHP script, if anything
@@ -139,7 +135,6 @@ include 'header.php';
                     type: 'post',
                     success: function(php_script_response){
                         $('#processing').modal('close');
-                        alert(php_script_response); // display response from the PHP script, if any
                         table.ajax.reload();
                     }
                 });
@@ -148,8 +143,6 @@ include 'header.php';
             $("#del").click(function () {
                 var row = table.row('.selected').data();
                 var id = row['id'];
-                console.log(row);
-                console.log(id);
                 $.post("api/documents", {id: id, _method: "DELETE"}).done(function (data) {
                     table.ajax.reload();
                 });
@@ -160,9 +153,7 @@ include 'header.php';
                 var libelle = $('#edit_libelle').val();
                 var rang = $('#edit_rang').val();
                 var promo = $('#edit_select_promo').val();
-                console.log(libelle, rang, promo);
                 var form_data = new FormData();
-                alert(form_data);
                 $.post("api/documents", {
                     id: id,
                     libelle: libelle,
@@ -170,7 +161,6 @@ include 'header.php';
                     promo: promo,
                     _method: "PUT"
                 }).done(function (data) {
-                    alert(data);
                     table.ajax.reload();
                 });
             });
@@ -233,8 +223,6 @@ include 'header.php';
                     var promo = row['promo'];
                     var rang = row['rang'];
                     var libelle = row['libelle'];
-                    console.log(row);
-                    console.log(promo, rang, libelle);
                     $('#edit_select_promo option[value="' + promo + '"]').prop('selected', true);
                     $('#edit_rang option[value="' + rang + '"]');
                     $('#edit_libelle option[value="' + libelle + '"]');

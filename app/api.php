@@ -40,7 +40,6 @@ function addDocument()
     $promoDAO = $GLOBALS['promoDAO'];
 
     $rang = $_POST['rang'];
-    echo $_POST['promo'];
     if($_POST['promo'] != 'null') {
         $tempPromo = $promoDAO->get($_POST['promo']);
         if (($tempPromo->getLocalisation() != 'N/A' && $tempPromo->getLocalisation() != '') && $tempPromo->getAlternance() != "") {
@@ -82,7 +81,6 @@ function addDocument()
             move_uploaded_file($_FILES['file']['tmp_name'], $GLOBALS['fileLoc'] .'A345/'. $_FILES['file']['name']);
         }
     }
-    echo print_r($data);
 }
 
 /*Supprime un document*/
@@ -103,7 +101,6 @@ function putDocument()
 
     $id = $_POST['id'];
     $rang = $_POST['rang'];
-    echo $_POST['promo'];
     if ($_POST['promo'] != null) {
         $tempPromo = $promoDAO->get($_POST['promo']);
         if ($tempPromo->getLocalisation() != 'N/A' && $tempPromo->getAlternance() != "") {
@@ -126,8 +123,6 @@ function putDocument()
     $data[] = [$id, $rang, $promo, $libelle];
 
     $documentDAO->editDocument($id, $rang, $promo, $libelle);
-
-    echo print_r($data);
 }
 
 /*
@@ -197,13 +192,6 @@ function delPromo()
 
 function editPromo()
 {
-    echo $_POST['id'].'<br/>';
-    echo $_POST['cycle'].'<br/>';
-    echo $_POST['loc'].'<br/>';
-    echo $_POST['annee'].'<br/>';
-    echo $_POST['alt'].'<br/>';
-    echo $_POST['libelle'].'<br/>';
-
     $dao = $GLOBALS['promoDAO'];
     $dao->updatePromo($_POST['id'],$_POST['cycle'],$_POST['loc'],$_POST['annee'],$_POST['alt'],$_POST['libelle']);
 }

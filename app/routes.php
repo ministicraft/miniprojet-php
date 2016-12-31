@@ -11,7 +11,6 @@ use App\DAO\PromoDAO;
 include_once('api.php');
 $GLOBALS['documentDAO'] = new DocumentDAO($GLOBALS['db']);
 $GLOBALS['promoDAO'] = new PromoDAO($GLOBALS['db']);
-$GLOBALS['fileLoc'] = 'uploads/';
 
 /*Route Client*/
 

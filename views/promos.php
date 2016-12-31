@@ -136,11 +136,6 @@ include 'header.php';
                     loc = $("#loc").val();
                     $.post( "api/locs", {loc: loc});
                 }
-                console.log(cycle);
-                console.log(loc);
-                console.log(annee);
-                console.log(alternance);
-                console.log(libelle);
                 var post = $.post( "api/promos", { cycle: cycle, loc: loc, annee: annee, alt: alternance,libelle: libelle });
                 table.ajax.reload();
             });
@@ -148,8 +143,6 @@ include 'header.php';
             $("#del").click(function () {
                 var row = table.row('.selected').data();
                 var id = row['id'];
-                console.log(row);
-                console.log(id);
                 $.post( "api/promos", { id: id, _method: "DELETE" });
                 table.ajax.reload();
             });
@@ -170,13 +163,7 @@ include 'header.php';
                     loc = $("#edit_loc").val();
                     $.post( "api/locs", {loc: loc});
                 }
-                console.log(cycle);
-                console.log(loc);
-                console.log(annee);
-                console.log(alternance);
-                console.log(libelle);
                 $.post( "api/promos", {id: id, cycle: cycle, loc: loc, annee: annee, alt: alternance, libelle:libelle, _method: "PUT" }).done(function (data) {
-                    alert(data);
                     table.ajax.reload();
                 });
             });
@@ -318,7 +305,6 @@ include 'header.php';
                 annee = row['annee'];
                 alternance = row['alt'];
                 libelle = row['libelle'];
-                console.log(row);
                 $('#edit_select_cycle option[value="' + cycle + '"]').prop('selected', true);
                 $('#edit_select_loc option[value="' + loc + '"]').prop('selected', true);
                 $('#edit_select_annee option[value="' + annee + '"]').prop('selected', true);
@@ -327,9 +313,7 @@ include 'header.php';
                 } else {
                     $('#edit_select_alternance option[value="' + alternance + '"]').prop('selected', true);
                 }
-                console.log(libelle);
                 $("#edit_libelle").val(libelle);
-                console.log($("#edit_libelle"));
                 $('select').material_select();
             } );
         });
