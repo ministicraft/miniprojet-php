@@ -13,7 +13,7 @@
   $DbName = "doc_rentree";
   $DbUser = "cir32016";
   $DbPassword = "cir32016";
-
+/*
 $libellePromo = array (
     "1&#x02B3;&#x1D49; année, Cycle Biologie Sciences et Technologies" => "CBIO_A1",
     "1&#x02B3;&#x1D49; année, Cycle Sciences de l'Ingénieur" => "CSI_A1",
@@ -33,8 +33,7 @@ $libellePromo = array (
     "5&#x1D49; année, Majeure - M2 (alternant)" => "M_A5_ALT",
     "5&#x1D49; année, Majeure - M2 (non alternant)" => "M_A5_NONALT",
     "5&#x1D49; année, Cycle Ingénieur Par l'Apprentissage" => "CIPA_A5"
-);
-/*
+);*/
   $DbLink = mysql_connect($DbHost, $DbUser, $DbPassword) or die('erreur de connexion au serveur');
   mysql_select_db($DbName) or die('erreur de connexion a la base de donnees');
   mysql_query("SET NAMES 'utf8'");
@@ -58,7 +57,7 @@ $libellePromo = array (
     }
     $libellePromo[$data['libelle']] = $promo;
     print_r($libellePromo);
-  }*/
+  }
 
   require_once("lib.php");
   
