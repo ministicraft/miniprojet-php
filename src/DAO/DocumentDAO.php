@@ -59,7 +59,7 @@ class DocumentDAO
 
     public function get($id)
     {
-        $dbh = new \PDO('mysql:host=localhost;dbname=doc_rentree', 'rentree', 'rentree');
+        $dbh = $this->getDb();
         $row = $dbh->query('SELECT * FROM document');
         $document = $this->buildDocument($row);
         return $document;

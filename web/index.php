@@ -9,7 +9,7 @@
 $app = array();
 
 require_once __DIR__.'/../vendor/limonade.php';
-require __DIR__ . '/../app/config/dev.php';
+require __DIR__ . '/../app/config/db.php';
 require __DIR__ . '/../app/app.php';
 require __DIR__ . '/../app/routes.php';
 
